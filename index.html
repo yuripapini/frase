@@ -119,6 +119,74 @@
             animation: fadeIn 1.5s ease forwards;
         }
 
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .modal-overlay.hidden {
+            opacity: 1;
+            animation: fadeOut 0.5s ease forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                pointer-events: none;
+            }
+        }
+
+        .modal {
+            background: #16213e;
+            border: 1px solid rgba(233, 69, 96, 0.3);
+            border-radius: 16px;
+            padding: 40px 30px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(233, 69, 96, 0.15);
+        }
+
+        .modal p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #c4c4c4;
+            margin-bottom: 30px;
+        }
+
+        .modal button {
+            background: #e94560;
+            color: #fff;
+            border: none;
+            padding: 12px 35px;
+            border-radius: 30px;
+            font-family: 'Cormorant Garamond', 'Georgia', serif;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .modal button:hover {
+            background: #c73652;
+            transform: scale(1.05);
+        }
+
+        .modal button:active {
+            transform: scale(0.97);
+        }
+
         @media (max-width: 400px) {
             .card {
                 padding: 35px 22px;
@@ -127,11 +195,20 @@
                 font-size: 1rem;
                 line-height: 1.8;
             }
+            .modal p {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 <body>
     <canvas id="stars"></canvas>
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <p>Brutta negra, non dirmi che romanticone o che sdolzinato o cose simili che ti mangio</p>
+            <button id="modalBtn">Vabbè, ho capito</button>
+        </div>
+    </div>
     <div class="card">
         <div class="line"></div>
         <p class="text" id="text"></p>
@@ -182,6 +259,17 @@
         drawStars();
         window.addEventListener('resize', () => { resize(); createStars(); });
 
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalBtn = document.getElementById('modalBtn');
+
+        modalBtn.addEventListener('click', () => {
+            modalOverlay.classList.add('hidden');
+            setTimeout(() => {
+                modalOverlay.style.display = 'none';
+                setTimeout(type, 300);
+            }, 500);
+        });
+
         const fullText = "Questo fiore è solo l'inizio di parole che voglio trasformare in fatti, anche piccoli... dicono che il tulipano rosa significhi affetto, dolcezza e un inizio delicato, quindi ho pensato fosse perfetto. Non so nemmeno se ti piacciono i fiori o se magari ne preferisci altri, allo stesso tempo una rosa mi sembrava decisamente troppo banale e non lo sono. L'altra cosa è una stronzata vera, ma se funziona magari ti salva un po' quegli occhioni che mi mandano KO.";
 
         const textEl = document.getElementById('text');
@@ -205,7 +293,6 @@
             }
         }
 
-        setTimeout(type, 2500);
     </script>
 </body>
 </html>
