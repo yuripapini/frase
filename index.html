@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Per te</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -16,19 +17,44 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #1a1a2e;
-            font-family: 'Georgia', 'Times New Roman', serif;
+            background: #0f0f1a;
+            font-family: 'Cormorant Garamond', 'Georgia', serif;
             padding: 20px;
+            overflow: hidden;
+        }
+
+        canvas#stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
         }
 
         .card {
-            background: #16213e;
+            position: relative;
+            z-index: 1;
+            background: rgba(22, 33, 62, 0.7);
+            backdrop-filter: blur(12px);
             border-radius: 16px;
             padding: 45px 35px;
             max-width: 520px;
             width: 100%;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 2s ease forwards;
+            animation-delay: 0.3s;
+            box-shadow: 0 0 60px rgba(233, 69, 96, 0.06);
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .line {
@@ -37,14 +63,33 @@
             background: #e94560;
             margin: 0 auto 30px;
             border-radius: 2px;
+            opacity: 0;
+            animation: fadeIn 1.5s ease forwards;
+            animation-delay: 1s;
         }
 
         .text {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             line-height: 1.9;
             color: #c4c4c4;
             font-style: italic;
             letter-spacing: 0.02em;
+            min-height: 120px;
+        }
+
+        .text .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.1em;
+            background: #e94560;
+            margin-left: 2px;
+            vertical-align: text-bottom;
+            animation: blink 0.8s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
 
         .ps {
@@ -53,6 +98,12 @@
             color: #e94560;
             font-style: normal;
             font-weight: bold;
+            opacity: 0;
+            animation: fadeIn 1.5s ease forwards;
+        }
+
+        .ps.visible {
+            animation: fadeIn 1.5s ease forwards;
         }
 
         .line-bottom {
@@ -61,6 +112,11 @@
             background: #e94560;
             margin: 28px auto 0;
             border-radius: 2px;
+            opacity: 0;
+        }
+
+        .line-bottom.visible {
+            animation: fadeIn 1.5s ease forwards;
         }
 
         @media (max-width: 400px) {
@@ -75,13 +131,81 @@
     </style>
 </head>
 <body>
+    <canvas id="stars"></canvas>
     <div class="card">
         <div class="line"></div>
-        <p class="text">
-            Questo fiore è solo l'inizio di parole che voglio trasformare in fatti, anche piccoli... dicono che il tulipano rosa significhi affetto, dolcezza e un inizio delicato, quindi ho pensato fosse perfetto. Non so nemmeno se ti piacciono i fiori o se magari ne preferisci altri, allo stesso tempo una rosa mi sembrava decisamente troppo banale e non lo sono. L'altra cosa è una stronzata vera, ma se funziona magari ti salva un po' quegli occhioni che mi mandano KO.
-        </p>
-        <p class="ps">PS: se non hai i taralli per me, giuro che potrei fare l'offeso.</p>
-        <div class="line-bottom"></div>
+        <p class="text" id="text"></p>
+        <p class="ps" id="ps">PS: se non hai i taralli per me, giuro che potrei fare l'offeso.</p>
+        <div class="line-bottom" id="lineBottom"></div>
     </div>
+
+    <script>
+        const canvas = document.getElementById('stars');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        function createStars() {
+            stars = [];
+            const count = Math.floor((canvas.width * canvas.height) / 3000);
+            for (let i = 0; i < count; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: Math.random() * 1.5 + 0.3,
+                    alpha: Math.random(),
+                    speed: Math.random() * 0.005 + 0.002,
+                    dir: Math.random() > 0.5 ? 1 : -1
+                });
+            }
+        }
+
+        function drawStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                s.alpha += s.speed * s.dir;
+                if (s.alpha >= 1 || s.alpha <= 0.1) s.dir *= -1;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(200, 200, 220, ${s.alpha})`;
+                ctx.fill();
+            });
+            requestAnimationFrame(drawStars);
+        }
+
+        resize();
+        createStars();
+        drawStars();
+        window.addEventListener('resize', () => { resize(); createStars(); });
+
+        const fullText = "Questo fiore è solo l'inizio di parole che voglio trasformare in fatti, anche piccoli... dicono che il tulipano rosa significhi affetto, dolcezza e un inizio delicato, quindi ho pensato fosse perfetto. Non so nemmeno se ti piacciono i fiori o se magari ne preferisci altri, allo stesso tempo una rosa mi sembrava decisamente troppo banale e non lo sono. L'altra cosa è una stronzata vera, ma se funziona magari ti salva un po' quegli occhioni che mi mandano KO.";
+
+        const textEl = document.getElementById('text');
+        const psEl = document.getElementById('ps');
+        const lineBottom = document.getElementById('lineBottom');
+        let i = 0;
+        const cursor = document.createElement('span');
+        cursor.className = 'cursor';
+
+        function type() {
+            if (i < fullText.length) {
+                textEl.textContent = fullText.substring(0, i + 1);
+                textEl.appendChild(cursor);
+                i++;
+                const delay = fullText[i - 1] === '.' || fullText[i - 1] === ',' ? 120 : 45;
+                setTimeout(type, delay);
+            } else {
+                cursor.remove();
+                psEl.classList.add('visible');
+                lineBottom.classList.add('visible');
+            }
+        }
+
+        setTimeout(type, 2500);
+    </script>
 </body>
 </html>
