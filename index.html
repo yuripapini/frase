@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Un tulipano per te</title>
+    <title>Per te</title>
     <style>
         * {
             margin: 0;
@@ -16,59 +16,56 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #fce4ec, #f8bbd0, #f48fb1);
+            background: #1a1a2e;
             font-family: 'Georgia', 'Times New Roman', serif;
             padding: 20px;
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px 30px;
-            max-width: 500px;
+            background: #16213e;
+            border-radius: 16px;
+            padding: 45px 35px;
+            max-width: 520px;
             width: 100%;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             text-align: center;
         }
 
-        .flower {
-            font-size: 60px;
-            margin-bottom: 20px;
-            animation: sway 3s ease-in-out infinite;
-        }
-
-        @keyframes sway {
-            0%, 100% { transform: rotate(-5deg); }
-            50% { transform: rotate(5deg); }
+        .line {
+            width: 40px;
+            height: 2px;
+            background: #e94560;
+            margin: 0 auto 30px;
+            border-radius: 2px;
         }
 
         .text {
             font-size: 1.1rem;
             line-height: 1.9;
-            color: #4a2040;
+            color: #c4c4c4;
             font-style: italic;
             letter-spacing: 0.02em;
         }
 
         .ps {
-            margin-top: 25px;
+            margin-top: 28px;
             font-size: 1rem;
-            color: #7b3f6e;
+            color: #e94560;
             font-style: normal;
             font-weight: bold;
         }
 
-        .hearts {
-            margin-top: 25px;
-            font-size: 20px;
-            letter-spacing: 6px;
-            opacity: 0.7;
+        .line-bottom {
+            width: 40px;
+            height: 2px;
+            background: #e94560;
+            margin: 28px auto 0;
+            border-radius: 2px;
         }
 
         @media (max-width: 400px) {
             .card {
-                padding: 30px 20px;
+                padding: 35px 22px;
             }
             .text {
                 font-size: 1rem;
@@ -79,12 +76,12 @@
 </head>
 <body>
     <div class="card">
-        <div class="flower">🌷</div>
+        <div class="line"></div>
         <p class="text">
             Questo fiore è solo l'inizio di parole che voglio trasformare in fatti, anche piccoli... dicono che il tulipano rosa significhi affetto, dolcezza e un inizio delicato, quindi ho pensato fosse perfetto. Non so nemmeno se ti piacciono i fiori o se magari ne preferisci altri, allo stesso tempo una rosa mi sembrava decisamente troppo banale e non lo sono. L'altra cosa è una stronzata vera, ma se funziona magari ti salva un po' quegli occhioni che mi mandano KO.
         </p>
         <p class="ps">PS: se non hai i taralli per me, giuro che potrei fare l'offeso.</p>
-        <div class="hearts">🌷 🌷 🌷</div>
+        <div class="line-bottom"></div>
     </div>
 </body>
 </html>
